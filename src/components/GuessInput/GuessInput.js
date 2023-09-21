@@ -6,8 +6,7 @@ function GuessInput() {
   const handleSubmit = (event) => {
     event.preventDefault();
     
-    const sanitizedGuess = guess.trim().toUpperCase();
-    console.log({guess: sanitizedGuess});
+    console.log({guess});
     
     setGuess('');
   }
@@ -31,7 +30,8 @@ function GuessInput() {
         title="Please enter exactly 5 letters"
         value={guess}
         onChange={(event) => {
-          setGuess(event.target.value)
+          const nextGuess = event.target.value.toUpperCase();
+          setGuess(nextGuess)
         }}
       />
     </form>
