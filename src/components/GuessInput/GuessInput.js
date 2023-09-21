@@ -5,14 +5,7 @@ function GuessInput({handleSubmitGuess}) {
   
   const handleSubmit = (event) => {
     event.preventDefault();
-    
-    const nextGuess = {
-      id: crypto.randomUUID(),
-      guess
-    }
-    console.log(nextGuess);
-    
-    handleSubmitGuess(nextGuess);
+    handleSubmitGuess(guess);
     setGuess('');
   }
   
