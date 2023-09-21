@@ -2,10 +2,13 @@ import React from 'react';
 
 import {sample} from '../../utils';
 import {WORDS} from '../../data';
+import {NUM_OF_GUESSES_ALLOWED} from '../../constants';
 
 import GuessInput from '../GuessInput';
 import GuessResults from '../GuessResults';
 import Banner from '../Banner';
+import LostBanner from '../LostBanner';
+import WonBanner from '../WonBanner';
 
 // Pick a random word on every pageload.
 const answer = sample(WORDS);
@@ -13,14 +16,19 @@ const answer = sample(WORDS);
 console.info({ answer });
 
 function Game() {
+  const [gameStatus, setGameStatus] = React.useState('running');
   const [guessResults, setGuessResults] = React.useState([]);
   
   const handleSubmitGuess = (guess) => {
-    setGuessResults([...guessResults, guess]);
+    const nextGuessResults = [...guessResults, guess];
+    setGuessResults(nextGuessResults);
+    
+    if (guess === answer) {
+      setGameStatus('won');
+    } else if (nextGuessResults.length >= NUM_OF_GUESSES_ALLOWED) {
+      setGameStatus('lost');
+    }
   }
-  
-  const hasGuessed = guessResults.some((guess) => guess === answer);
-  const isGameOver = (guessResults.length === 6) || hasGuessed;
   
   return (
     <>
@@ -30,15 +38,10 @@ function Game() {
       />
       <GuessInput
         handleSubmitGuess={handleSubmitGuess}
-        disabled={isGameOver}
+        disabled={gameStatus !== 'running'}
       />
-      {isGameOver && (
-        <Banner
-          answer={answer}
-          hasGuessed={hasGuessed}
-          guessResults={guessResults}
-        />
-      )}
+      {gameStatus === 'won' && <WonBanner numOfGuesses={guessResults.length} />}
+      {gameStatus === 'lost' && <LostBanner answer={answer} />}
     </>
   )
 }
