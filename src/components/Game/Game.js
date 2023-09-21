@@ -2,10 +2,10 @@ import React from 'react';
 
 import {sample} from '../../utils';
 import {WORDS} from '../../data';
-import {checkGuess} from '../../game-helpers';
 
 import GuessInput from '../GuessInput';
 import GuessResults from '../GuessResults';
+import Banner from '../Banner';
 
 // Pick a random word on every pageload.
 const answer = sample(WORDS);
@@ -16,18 +16,29 @@ function Game() {
   const [guessResults, setGuessResults] = React.useState([]);
   
   const handleSubmitGuess = (guess) => {
-    const nextGuessResult = checkGuess(guess, answer);
-    setGuessResults([...guessResults, nextGuessResult]);
+    setGuessResults([...guessResults, guess]);
   }
+  
+  const hasGuessed = guessResults.some((guess) => guess === answer);
+  const isGameOver = (guessResults.length === 6) || hasGuessed;
   
   return (
     <>
       <GuessResults
         guessResults={guessResults}
+        answer={answer}
       />
       <GuessInput
         handleSubmitGuess={handleSubmitGuess}
+        disabled={isGameOver}
       />
+      {isGameOver && (
+        <Banner
+          answer={answer}
+          hasGuessed={hasGuessed}
+          guessResults={guessResults}
+        />
+      )}
     </>
   )
 }
