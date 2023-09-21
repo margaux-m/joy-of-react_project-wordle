@@ -8,9 +8,9 @@ function Guess({value}) {
       {range(0, 5).map((num) => (
         <span
           key={num}
-          className="cell"
+          className={`cell ${value ? value[num].status : undefined}`}
         >
-          {value ? value[num] : undefined}
+          {value ? value[num].letter : undefined}
         </span>
       ))}
     </p>
