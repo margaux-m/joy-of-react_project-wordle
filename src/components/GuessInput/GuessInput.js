@@ -1,6 +1,21 @@
 import React from 'react';
 
-function GuessInput({guess, setGuess, handleSubmit}) {
+function GuessInput({handleSubmitGuess}) {
+  const [guess, setGuess] = React.useState('');
+  
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    
+    const nextGuess = {
+      id: crypto.randomUUID(),
+      guess
+    }
+    console.log(nextGuess);
+    
+    handleSubmitGuess(nextGuess);
+    setGuess('');
+  }
+  
   return (
     <form
       className="guess-input-wrapper"
